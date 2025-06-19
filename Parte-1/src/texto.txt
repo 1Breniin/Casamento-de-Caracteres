@@ -1,1 +1,1 @@
-Texto exemplo, texto tem palavras, palavras exercem fascínio. Este texto serve para testar o algoritmo de casamento aproximado de padrões em texto plano.
+Texto exemplo, texto tem palavras, palavras exercem fascínio.W
