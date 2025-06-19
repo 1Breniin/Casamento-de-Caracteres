@@ -1,4 +1,4 @@
-# 🧩 TP4 - Busca Aproximada em Arquivos Não Comprimidos
+# 🧩 TP3 (Parte-1) - Busca Aproximada em Arquivos Não Comprimidos
 
 Este projeto implementa dois algoritmos de casamento aproximado de padrões em arquivos de texto:
 
