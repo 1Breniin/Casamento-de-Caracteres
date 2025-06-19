@@ -84,6 +84,6 @@ palavras (k=0) 26 36
 
 ## 👨‍💻 Autor
 
-Breno Esteves  
+Breno Esteves dos Santos e Bernardo Maia Detomi
 Curso de Ciência da Computação - UFSJ  
-Trabalho Prático 4 – Processamento de Cadeias de Caracteres
+Trabalho Prático 3 – Processamento de Cadeias de Caracteres
