@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "util.h"
+
+char *ler_arquivo(const char *nome) {
+    FILE *fp = fopen(nome, "r");
+    if (!fp) return NULL;
+
+    fseek(fp, 0, SEEK_END);
+    long tamanho = ftell(fp);
+    rewind(fp);
+
+    char *conteudo = malloc(tamanho + 1);
+    if (!conteudo) return NULL;
+
+    fread(conteudo, 1, tamanho, fp);
+    conteudo[tamanho] = '\0';
+    fclose(fp);
+    return conteudo;
+}
+
+char **ler_linhas(const char *nome, int *n_linhas) {
+    FILE *fp = fopen(nome, "r");
+    if (!fp) return NULL;
+
+    size_t tamanho = 0;
+    char *linha = NULL;
+    int capacidade = 10;
+    char **linhas = malloc(capacidade * sizeof(char*));
+    *n_linhas = 0;
+
+    while (getline(&linha, &tamanho, fp) != -1) {
+        linha[strcspn(linha, "\n")] = '\0';
+        if (*n_linhas >= capacidade) {
+            capacidade *= 2;
+            linhas = realloc(linhas, capacidade * sizeof(char*));
+        }
+        linhas[*n_linhas] = strdup(linha);
+        (*n_linhas)++;
+    }
+
+    free(linha);
+    fclose(fp);
+    return linhas;
+}
+
+void liberar_linhas(char **linhas, int n) {
+    for (int i = 0; i < n; i++)
+        free(linhas[i]);
+    free(linhas);
+}
