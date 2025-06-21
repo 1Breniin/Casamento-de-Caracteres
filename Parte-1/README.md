@@ -10,7 +10,7 @@ O sistema busca padrões com até `k` erros (`k = 0, 1, 2, 3`) e exibe os result
 ## 📂 Estrutura do Projeto
 
 ```
-tp4_parte1/
+tp3_parte1/src
 ├── main.c            # Função principal
 ├── busca.c/.h        # Implementação dos algoritmos
 ├── util.c/.h         # Leitura de arquivos e utilitários
@@ -35,7 +35,7 @@ Isso gera o executável:
 ## ▶️ Execução
 
 ```bash
-./tp4_parte1 <algoritmo> <arquivo_texto> <arquivo_padroes>
+./tp3_parte1 <algoritmo> <arquivo_texto> <arquivo_padroes>
 ```
 
 **Parâmetros:**
@@ -60,7 +60,7 @@ exemplo
 
 #### Execução
 ```bash
-./tp4_parte1 1 texto.txt padroes.txt
+./tp3_parte1 1 texto.txt padroes.txt
 ```
 
 #### Saída no terminal

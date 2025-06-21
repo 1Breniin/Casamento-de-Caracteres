@@ -1,0 +1,1 @@
+Este é um texto de teste para medir o desempenho do algoritmo Boyer-Moore-Horspool com texto maior e mais repetição. Este é um texto de teste. Este é um texto de teste. Este é um texto de teste.
