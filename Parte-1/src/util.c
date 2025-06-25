@@ -12,10 +12,13 @@ char *ler_arquivo(const char *nome) {
     rewind(fp);
 
     char *conteudo = malloc(tamanho + 1);
-    if (!conteudo) return NULL;
+    if (!conteudo) {
+        fclose(fp);
+        return NULL;
+    }
 
-    fread(conteudo, 1, tamanho, fp);
-    conteudo[tamanho] = '\0';
+    size_t lidos = fread(conteudo, 1, tamanho, fp);
+    conteudo[lidos] = '\0';
     fclose(fp);
     return conteudo;
 }

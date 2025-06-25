@@ -5,7 +5,7 @@
 #include <sys/time.h>
 #include "busca.h"
 
-void busca_programacao_dinamica(const char *texto, const char *padrao, int k, FILE *saida) {
+void busca_programacao_dinamica(const char *texto, const char *padrao, int k) {
     int n = strlen(texto);
     int m = strlen(padrao);
     int **D = malloc((m+1) * sizeof(int*));
@@ -22,8 +22,7 @@ void busca_programacao_dinamica(const char *texto, const char *padrao, int k, FI
     for (int i = 1; i <= m; i++)
         D[i][0] = i;
 
-    printf("%s (k=%d)", padrao, k);
-    fprintf(saida, "%s (k=%d)", padrao, k);
+    printf("%s", padrao);
 
     for (int j = 1; j <= n; j++) {
         for (int i = 1; i <= m; i++) {
@@ -36,22 +35,21 @@ void busca_programacao_dinamica(const char *texto, const char *padrao, int k, FI
                           (delecao < substituicao ? delecao : substituicao));
         }
         if (D[m][j] <= k) {
-            printf(" %d", j - m);
-            fprintf(saida, " %d", j - m);
+            printf(" %d", j - m + 1);
         }
     }
 
     gettimeofday(&end, NULL);
     double tempo = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec) / 1e6;
-    printf(" [comparações: %d | tempo: %.6fs]\n", comparacoes, tempo);
-    fprintf(saida, "\n");
+    printf("\n");
+    fprintf(stderr, "Programação Dinâmica (k=%d): %d comparações, %.6fs\n", k, comparacoes, tempo);
 
     for (int i = 0; i <= m; i++)
         free(D[i]);
     free(D);
 }
 
-void busca_shift_and(const char *texto, const char *padrao, int k, FILE *saida) {
+void busca_shift_and(const char *texto, const char *padrao, int k) {
     int m = strlen(padrao);
     int n = strlen(texto);
 
@@ -72,8 +70,7 @@ void busca_shift_and(const char *texto, const char *padrao, int k, FILE *saida) 
     gettimeofday(&start, NULL);
 
     int comparacoes = 0;
-    printf("%s (k=%d)", padrao, k);
-    fprintf(saida, "%s (k=%d)", padrao, k);
+    printf("%s", padrao);
 
     for (int j = 0; j < n; j++) {
         uint32_t oldR = R[0];
@@ -88,13 +85,12 @@ void busca_shift_and(const char *texto, const char *padrao, int k, FILE *saida) 
         }
 
         if (R[k] & (1 << (m - 1))) {
-            printf(" %d", j - m + 1);
-            fprintf(saida, " %d", j - m + 1);
+            printf(" %d", j - m + 2);
         }
     }
 
     gettimeofday(&end, NULL);
     double tempo = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec) / 1e6;
-    printf(" [comparações: %d | tempo: %.6fs]\n", comparacoes, tempo);
-    fprintf(saida, "\n");
+    printf("\n");
+    fprintf(stderr, "Shift-And (k=%d): %d comparações, %.6fs\n", k, comparacoes, tempo);
 }
