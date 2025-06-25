@@ -1,22 +1,69 @@
-# 🧩 TP3 (Parte-1) - Busca Aproximada em Arquivos Não Comprimidos
+# Parte 1: Busca Aproximada em Arquivos Não Comprimidos
 
-Este projeto implementa dois algoritmos de casamento aproximado de padrões em arquivos de texto:
+## Compilação
 
-- **Programação Dinâmica**
-- **Shift-And Aproximado**
-
-O sistema busca padrões com até `k` erros (`k = 0, 1, 2, 3`) e exibe os resultados tanto no terminal quanto em um arquivo de saída.
-
-## 📂 Estrutura do Projeto
-
+```bash
+make clean
+make
 ```
-tp3_parte1/src
-├── main.c            # Função principal
-├── busca.c/.h        # Implementação dos algoritmos
-├── util.c/.h         # Leitura de arquivos e utilitários
-├── Makefile          # Compilação automatizada
-└── saida.txt         # Gerado automaticamente com os resultados
+
+## Execução
+
+```bash
+./tp3_parte1 <algoritmo> <arquivo_texto> <arquivo_padroes>
 ```
+
+**Parâmetros:**
+- `algoritmo`: 1 para Programação Dinâmica, 2 para Shift-And
+- `arquivo_texto`: arquivo contendo o texto onde buscar
+- `arquivo_padroes`: arquivo contendo os padrões (um por linha)
+
+**Comportamento:**
+O programa executa automaticamente a busca para k = 0, 1, 2, 3 e exibe os resultados para cada valor.
+
+## Exemplos
+
+### Programação Dinâmica
+```bash
+./tp3_parte1 1 texto.txt padroes.txt
+```
+
+### Shift-And
+```bash
+./tp3_parte1 2 texto.txt padroes.txt
+```
+
+## Arquivos de Teste
+
+- `texto.txt`: "Texto exemplo, texto tem palavras, palavras exercem fascínio."
+- `padroes.txt`: contém "palavras" e "exemplo"
+
+## Saída Esperada
+
+Para cada padrão, o programa exibe os resultados para k=0,1,2,3:
+```
+palavras 26 36                    (k=0)
+palavras 25 26 27 35 36 37        (k=1)
+palavras 24 25 26 27 28 34 35 36 37 38    (k=2)
+palavras 23 24 25 26 27 28 29 33 34 35 36 37 38 39  (k=3)
+exemplo 7                         (k=0)
+exemplo 6 7 8                     (k=1)
+exemplo 5 6 7 8 9                 (k=2)
+exemplo 4 5 6 7 8 9 10            (k=3)
+```
+
+## Estrutura dos Arquivos
+
+- `main.c`: Programa principal
+- `busca.c/busca.h`: Implementação dos algoritmos de busca
+- `util.c/util.h`: Funções auxiliares para leitura de arquivos
+- `Makefile`: Script de compilação
+
+## Observações
+
+- O algoritmo Shift-And está limitado a padrões de até 31 caracteres
+- As métricas de desempenho são exibidas no stderr
+- As posições são mostradas com indexação baseada em 1
 
 ## ⚙️ Compilação
 
