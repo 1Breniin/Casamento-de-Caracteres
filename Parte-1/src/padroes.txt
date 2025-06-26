@@ -1,2 +1,5 @@
 palavras
 exemplo
+desempenho
+teste
+importante

@@ -11,12 +11,12 @@ typedef struct {
     double tempo;
 } Resultado;
 
-Resultado buscar(const unsigned char *texto, int n, const unsigned char *padrao, int m) {
+Resultado buscar(const unsigned char *texto, int n, const unsigned char *padrao, int m, FILE *saida) {
     struct timeval start, end;
     int comparacoes = 0;
 
     gettimeofday(&start, NULL);
-    bmh(texto, n, padrao, m, &comparacoes);
+    bmh(texto, n, padrao, m, &comparacoes, saida);
     gettimeofday(&end, NULL);
 
     double tempo = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec) / 1e6;
@@ -38,6 +38,9 @@ int main(int argc, char *argv[]) {
     const char *arquivo_texto = argv[1];
     const char *arquivo_padroes = argv[2];
 
+    printf("Comprimindo arquivo...\n");
+    comprimir_arquivo(arquivo_texto, "texto.huff");
+
     // Carregar texto original
     FILE *f = fopen(arquivo_texto, "r");
     if (!f) {
@@ -52,10 +55,6 @@ int main(int argc, char *argv[]) {
     texto[lidos] = '\0';
     tam_texto = lidos;
     fclose(f);
-
-    // Comprimir arquivo
-    printf("Comprimindo arquivo...\n");
-    comprimir_arquivo(arquivo_texto, "texto.huff");
 
     // Carregar texto comprimido
     int tam_comp;
@@ -73,6 +72,13 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    // Criar arquivo de saída
+    FILE *saida = fopen("saida.txt", "w");
+    if (!saida) {
+        fprintf(stderr, "Erro ao criar arquivo saida.txt\n");
+        return 1;
+    }
+
     printf("Tamanho original: %d bytes\n", tam_texto);
     printf("Tamanho comprimido: %d bytes\n", tam_comp);
     printf("Taxa de compressão: %.2f%%\n\n", 
@@ -83,7 +89,7 @@ int main(int argc, char *argv[]) {
 
         // Busca no texto original
         printf("📄 Texto original:\n");
-        Resultado r1 = buscar(texto, tam_texto, (unsigned char*)padroes[i], strlen(padroes[i]));
+        Resultado r1 = buscar(texto, tam_texto, (unsigned char*)padroes[i], strlen(padroes[i]), saida);
         imprimir_resultado("Métricas", r1);
 
         // Comprimir padrão e buscar no texto comprimido
@@ -91,12 +97,14 @@ int main(int argc, char *argv[]) {
         unsigned char *padrao_comp = comprimir_padrao(padroes[i], &tam_padrao_comp);
         
         printf("💾 Texto comprimido:\n");
-        Resultado r2 = buscar(comprimido, tam_comp, padrao_comp, tam_padrao_comp);
+        Resultado r2 = buscar(comprimido, tam_comp, padrao_comp, tam_padrao_comp, NULL);
         imprimir_resultado("Métricas", r2);
 
         printf("\n");
         free(padrao_comp);
     }
+
+    fclose(saida);
     free(texto);
     free(comprimido);
     liberar_linhas(padroes, n_padroes);

@@ -20,18 +20,28 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    // Criar arquivo de saída
+    FILE *saida = fopen("saida.txt", "w");
+    if (!saida) {
+        fprintf(stderr, "Erro ao criar arquivo saida.txt\n");
+        return 1;
+    }
+
     for (int i = 0; i < n_padroes; i++) {
         for (int k = 0; k <= 3; k++) {
             if (algoritmo == 1) {
-                busca_programacao_dinamica(texto, padroes[i], k);
+                busca_programacao_dinamica(texto, padroes[i], k, saida);
             } else if (algoritmo == 2) {
-                busca_shift_and(texto, padroes[i], k);
+                busca_shift_and(texto, padroes[i], k, saida);
             } else {
                 fprintf(stderr, "Algoritmo inválido.\n");
+                fclose(saida);
                 return 1;
             }
         }
     }
+    
+    fclose(saida);
     free(texto);
     liberar_linhas(padroes, n_padroes);
     return 0;

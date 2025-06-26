@@ -5,7 +5,7 @@
 #include <sys/time.h>
 #include "busca.h"
 
-void busca_programacao_dinamica(const char *texto, const char *padrao, int k) {
+void busca_programacao_dinamica(const char *texto, const char *padrao, int k, FILE *saida) {
     int n = strlen(texto);
     int m = strlen(padrao);
     int **D = malloc((m+1) * sizeof(int*));
@@ -23,6 +23,8 @@ void busca_programacao_dinamica(const char *texto, const char *padrao, int k) {
         D[i][0] = i;
 
     printf("%s", padrao);
+    
+    int primeira_ocorrencia = 1;
 
     for (int j = 1; j <= n; j++) {
         for (int i = 1; i <= m; i++) {
@@ -35,8 +37,24 @@ void busca_programacao_dinamica(const char *texto, const char *padrao, int k) {
                           (delecao < substituicao ? delecao : substituicao));
         }
         if (D[m][j] <= k) {
-            printf(" %d", j - m + 1);
+            int posicao = j - m + 1;
+            printf(" %d", posicao);
+            
+            // Escrever no arquivo apenas para k=0 (busca exata)
+            if (k == 0 && saida) {
+                if (primeira_ocorrencia) {
+                    fprintf(saida, "%d", posicao);
+                    primeira_ocorrencia = 0;
+                } else {
+                    fprintf(saida, " %d", posicao);
+                }
+            }
         }
+    }
+
+    // Finalizar linha no arquivo para k=0
+    if (k == 0 && saida) {
+        fprintf(saida, "\n");
     }
 
     gettimeofday(&end, NULL);
@@ -49,7 +67,7 @@ void busca_programacao_dinamica(const char *texto, const char *padrao, int k) {
     free(D);
 }
 
-void busca_shift_and(const char *texto, const char *padrao, int k) {
+void busca_shift_and(const char *texto, const char *padrao, int k, FILE *saida) {
     int m = strlen(padrao);
     int n = strlen(texto);
 
@@ -71,6 +89,8 @@ void busca_shift_and(const char *texto, const char *padrao, int k) {
 
     int comparacoes = 0;
     printf("%s", padrao);
+    
+    int primeira_ocorrencia = 1;
 
     for (int j = 0; j < n; j++) {
         uint32_t oldR = R[0];
@@ -85,8 +105,24 @@ void busca_shift_and(const char *texto, const char *padrao, int k) {
         }
 
         if (R[k] & (1 << (m - 1))) {
-            printf(" %d", j - m + 2);
+            int posicao = j - m + 2;
+            printf(" %d", posicao);
+            
+            // Escrever no arquivo apenas para k=0 (busca exata)
+            if (k == 0 && saida) {
+                if (primeira_ocorrencia) {
+                    fprintf(saida, "%d", posicao);
+                    primeira_ocorrencia = 0;
+                } else {
+                    fprintf(saida, " %d", posicao);
+                }
+            }
         }
+    }
+
+    // Finalizar linha no arquivo para k=0
+    if (k == 0 && saida) {
+        fprintf(saida, "\n");
     }
 
     gettimeofday(&end, NULL);

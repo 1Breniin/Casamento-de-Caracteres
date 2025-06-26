@@ -3,6 +3,6 @@
 
 #include <stdio.h>
 
-int bmh(const unsigned char *texto, int n, const unsigned char *padrao, int m, int *comparacoes);
+int bmh(const unsigned char *texto, int n, const unsigned char *padrao, int m, int *comparacoes, FILE *saida);
 
 #endif
